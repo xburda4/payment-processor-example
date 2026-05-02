@@ -1,0 +1,6 @@
+package: model
+output: model/model_gen.go
+output-options:
+  nullable-type: true
+generate:
+  models: true

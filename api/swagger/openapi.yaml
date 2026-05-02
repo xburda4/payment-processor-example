@@ -1,0 +1,121 @@
+openapi: 3.0.0
+info:
+  title: Search API
+  version: 1.0.0
+paths:
+  /sign-up:
+    post:
+      summary: Sign up a new user
+      requestBody:
+        $ref: '#/components/requestBodies/SignUpRequest'
+      responses:
+        '201':
+          description: User created successfully
+        '400':
+          description: Bad Request
+        '500':
+          description: Internal Server Error
+  /payments:
+    get:
+      summary: Get payments tied to the user
+      responses:
+        '200':
+          description: List of payments
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListPaymentsResponse'
+        '401':
+          description: Not Authorized
+        '500':
+          description: Internal Server Error
+    post:
+      summary: Create a new payment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PaymentInfo'
+      responses:
+        '201':
+          description: Payment created successfully
+        '400':
+          description: Bad Request
+        '401':
+          description: Not Authorized
+        '500':
+          description: Internal Server Error
+  /payments/{paymentID}:
+    get:
+      summary: Get a payment by ID
+      parameters:
+        - name: paymentID
+          in: path
+          required: true
+          description: ID of the payment
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Payment details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentInfo'
+        '400':
+          description: Bad Request
+        '500':
+          description: Internal Server Error
+
+components:
+  requestBodies:
+    SignUpRequest:
+      description: Request body for signing up a new user
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              email:
+                type: string
+                format: email
+              password:
+                type: string
+                format: password
+            required:
+              - email
+              - password
+  schemas:
+    UUID:
+      type: string
+      format: uuid
+    ListPaymentsResponse:
+      description: List of payments for the user
+      type: array
+      items:
+        $ref: '#/components/schemas/PaymentInfo'
+    PaymentInfo:
+      description: Information about a payment transaction
+      type: object
+      properties:
+        paymentID:
+          $ref: '#/components/schemas/UUID'
+        senderID:
+          $ref: '#/components/schemas/UUID'
+        receiverID:
+          $ref: '#/components/schemas/UUID'
+        amount:
+          type: number
+          format: float
+        timestamp:
+          type: string
+          format: date-time
+      required:
+        - paymentID
+        - senderID
+        - receiverID
+        - amount
+        - timestamp
