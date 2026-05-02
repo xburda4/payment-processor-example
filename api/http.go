@@ -12,13 +12,7 @@ import (
 	"fintech-proj/util/logger"
 )
 
-//go:generate go tool github.com/oapi-codegen/oapi-codegen/v2/cmd/oapi-codegen -config oapi-codegen-cfg.yaml swagger-ui/openapi.yaml
-
-type SwaggerUIAuth struct {
-	Name string `env:"SWAGGER_UI_NAME" validate:"required"`
-	//nolint:gosec
-	Password string `env:"SWAGGER_UI_PASSWORD" validate:"required"`
-}
+//go:generate go tool github.com/oapi-codegen/oapi-codegen/v2/cmd/oapi-codegen -config oapi-codegen-cfg.yaml swagger/openapi.yaml
 
 // Controller handles all /api endpoints.
 // It is responsible for routing requests to appropriate handlers.

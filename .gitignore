@@ -1,3 +1,5 @@
 .env
 
 repo-description.md
+
+api/model/model_gen.go
